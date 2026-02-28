@@ -1,0 +1,92 @@
+spring:
+  application:
+    name: concert-ticket
+
+
+## MOVE TO application-dev
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/concert_ticket?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+#    username: fajar_code
+#    password: fahmifadilah25
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    hikari:
+#      maximum-pool-size: 30
+#      minimum-idle: 10
+#      idle-timeout: 300000
+#      max-lifetime: 1800000
+#      connection-timeout: 30000
+#      pool-name: ConcertHikariCP
+
+
+
+  # if want to run the testing uncomment this line
+#  datasource:
+#    url: jdbc:h2:mem:testdb;MODE=MySQL
+#    driverClassName: org.h2.Driver
+#    username: test
+#    password:
+
+
+  jpa:
+#    hibernate:
+#      ddl-auto: create-drop #validate   # jangan pakai update di production
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          time_zone: UTC
+#        dialect: org.hibernate.dialect.MySQLDialect
+        generate_statistics: false
+#    show-sql: true
+
+  flyway:
+#    enabled: true   #set false for testing needed
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+    validate-on-migrate: true
+
+
+
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+  pattern:
+    console: >
+      {"timestamp":"%d{yyyy-MM-dd HH:mm:ss}",
+       "level":"%p",
+       "thread":"%t",
+       "logger":"%c",
+       "message":"%m"}%n
+
+
+#rule of assignment
+app:
+  booking:
+    hold-duration-minutes: 5
+  pricing:
+    min-multiplier: 0.1
+    max-multiplier: 2.5
+  rate-limit:
+    max-requests-per-minute: 100
